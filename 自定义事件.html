@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function addEvent(obj,Events,fn){
+				obj.custom=obj.custom||{};
+				obj.custom[Events]=obj.custom[Events]||[];
+				obj.custom[Events].push(fn);	
+			}
+			function trigger(obj,Events){
+				if(!obj.custom[Events])return null;
+				obj.custom[Events].forEach((e,i)=>{
+					e.call(obj);
+				})	
+			}
+			addEvent(document,'点击',function(){
+				document.documentElement.style.background = 'pink';
+			})
+			addEvent(document,'长按',function(ev){
+				document.documentElement.style.background = 'skyblue';	
+			})
+			document.onmousedown=function(ev){
+					var d = new Date;
+					var disX=ev.clientX;
+					var disY=ev.clientY;
+					document.onmouseup=function(ev){
+					var d2= new Date;
+						if(d2-d>2000&&disX-ev.clientX<5&&disY-ev.clientY<5){
+							trigger(document,'长按');
+						}else{
+							trigger(document,'点击');
+						}
+					}
+				}
+		</script>
+	</body>
+</html>
